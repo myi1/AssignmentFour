@@ -7,6 +7,8 @@ class Application:
         self._listSensors = []
         self._dictSensors = {}
         self._numSensors = 0
+        self._source = ''
+        self._destination = ''
 
     def getListSensors(self):
         return self._listSensors
@@ -17,6 +19,12 @@ class Application:
     def getDictSensors(self):
         return self._dictSensors
 
+    def getSource(self):
+        return self._source
+
+    def getDestination(self):
+        return self._destination
+
     def setListSensors(self, newListSensors):
         self._listSensors = newListSensors
 
@@ -25,6 +33,12 @@ class Application:
 
     def setDictSensors(self, newDictSensors):
         self._dictSensors = newDictSensors
+
+    def setSource(self, newSource):
+        self._source = newSource
+
+    def setDestination(self, newDestination):
+        self._destination = newDestination
 
     def askNumSensors(self):
         validInput = False
@@ -36,6 +50,21 @@ class Application:
             else:
                 self.setNumSensors(numSensors)
                 validInput = True
+
+    def askSensorID(self, type):
+        validInput = False
+        while validInput is not True:
+            try:
+                userInput = input('Enter the {0} sensor: '.format(type))
+
+                if userInput.isalpha():
+                    validInput = True
+                    return userInput
+
+                else:
+                    raise TypeError
+            except:
+                print('This is an invalid entry for {0} sensor!'.format(type))
 
     def createSensors(self):
         count = 0
@@ -70,8 +99,30 @@ class Application:
             dictSensors[sensor._id] = sensor._neighborsList
             self.setDictSensors(dictSensors)
 
+    def getSourceAndDestination(self):
+        self.setSource(self.askSensorID('source'))
+        self.setDestination(self.askSensorID('destination'))
+
+    def findPath(self, dictSensors, source, destination):
+        source = source
+        destination = destination
+        path = []
+        path.append(source)
+
+        if source == destination:
+            return path
+        else:
+            neighbors = dictSensors.get(source)
+            if destination in neighbors:
+                path.append(destination)
+            else:
+                self.findPath(dictSensors, neighbors[0], destination)
+
+        print('Path = {0}'.format(path))
+
 
 App = Application()
 App.createSensors()
 App.convrtToDictionary(App._listSensors)
-print(App.getDictSensors())
+App.getSourceAndDestination()
+App.findPath(App._dictSensors, App._source, App._destination)

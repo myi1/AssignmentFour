@@ -63,8 +63,8 @@ class WirelessNetworks:
         validInput = False
         while validInput is not True:
             try:
-                neighbor = (
-                    input('Enter the neighbor for Sensor {0}: '.format(sensorID)))
+                neighbor = input(
+                    'Enter the neighbor for Sensor {0}: '.format(sensorID))
 
                 if neighbor.isalpha() and neighbor != self._id:
                     validInput = True
