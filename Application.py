@@ -27,6 +27,19 @@ class Application:
                 self.setNumSensors = numSensors
                 validInput = True
 
+    def askSensorID(self):
+        validInput = False
+        while validInput is not True:
+            try:
+                sensorID = input("Enter the Sensor Id: ")
+                if sensorID.isalpha():
+                    validInput = True
+                    return sensorID
+                else:
+                    raise TypeError
+            except:
+                print("This is an invalid entry for sensor Id!")
+
 
 App = Application()
-App.askNumSensors()
+App.askSensorID()
