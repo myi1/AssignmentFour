@@ -7,6 +7,7 @@ class WirelessNetworks:
         self._id: 0
         self._oxygenLevel = 0
         self._temperature = 0
+        self._neighborsList = []
 
     def getId(self):
         return self._id
@@ -17,6 +18,9 @@ class WirelessNetworks:
     def getTemperature(self):
         return self._temperature
 
+    def getNeighborsList(self):
+        return self._neighborsList
+
     def setId(self, newId):
         self._id = newId
 
@@ -25,6 +29,9 @@ class WirelessNetworks:
 
     def setTemperature(self, newTemperature):
         self._temperature = newTemperature
+
+    def setNeighborsList(self, newNeighborsList):
+        self._neighborsList = newNeighborsList
 
     def askSensorID(self):
         validInput = False
@@ -59,7 +66,7 @@ class WirelessNetworks:
                 neighbor = (
                     input('Enter the neighbor for Sensor {0}: '.format(sensorID)))
 
-                if neighbor.isalpha():
+                if neighbor.isalpha() and neighbor != self._id:
                     validInput = True
                     return neighbor
                 else:
