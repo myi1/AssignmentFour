@@ -66,6 +66,17 @@ class Application:
                 validInput = True
                 return distance
 
+    def getOxygen(self):
+        validInput = False
+        while validInput is not True:
+            try:
+                oxygenLevel = int(input('Enter the Oxygen level in %: '))
+            except:
+                print('This is an invalid entry for the oxygen level!')
+            else:
+                validInput = True
+                return oxygenLevel
+
 
 App = Application()
-App.getDistance('A')
+App.getOxygen()
