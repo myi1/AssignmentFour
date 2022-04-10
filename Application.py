@@ -77,6 +77,17 @@ class Application:
                 validInput = True
                 return oxygenLevel
 
+    def getTemp(self):
+        validInput = False
+        while validInput is not True:
+            try:
+                temp = int(input('Enter the temperature measurement: '))
+            except:
+                print('This is an invalid entry for the temperature!')
+            else:
+                validInput = True
+                return temp
+
 
 App = Application()
-App.getOxygen()
+App.getTemp()
