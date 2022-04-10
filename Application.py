@@ -31,7 +31,8 @@ class Application:
         validInput = False
         while validInput is not True:
             try:
-                sensorID = input("Enter the Sensor Id: ")
+                sensorID = input(
+                    "_*__*__*__*__*__*__*__*__*__*_\nEnter the Sensor Id: ")
                 if sensorID.isalpha():
                     validInput = True
                     return sensorID
@@ -40,6 +41,31 @@ class Application:
             except:
                 print("This is an invalid entry for sensor Id!")
 
+    def getNeighbors(self):
+        validInput = False
+        while validInput is not True:
+            try:
+                numNeighbors = int(input('Enter the number of neighbours: '))
+            except:
+                print(
+                    "This is an invalid entry for the neighbour's name and/or distance!")
+            else:
+                validInput = True
+                return numNeighbors
+
+    def getDistance(self, sensorID):
+        validInput = False
+        while validInput is not True:
+            try:
+                distance = int(
+                    input('Enter the neighbor for Sensor {0}: '.format(sensorID)))
+            except:
+                print(
+                    'This is an invalid entry for the neighbour’s name and/or distance!')
+            else:
+                validInput = True
+                return distance
+
 
 App = Application()
-App.askSensorID()
+App.getDistance('A')
