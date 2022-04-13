@@ -9,6 +9,8 @@ class Application:
         self._numSensors = 0
         self._source = ''
         self._destination = ''
+        self._path = []
+        self._prevSource = ''
 
     def getListSensors(self):
         return self._listSensors
@@ -25,6 +27,12 @@ class Application:
     def getDestination(self):
         return self._destination
 
+    def getPath(self):
+        return self._path
+
+    def getPreviousSource(self):
+        return self._prevSource
+
     def setListSensors(self, newListSensors):
         self._listSensors = newListSensors
 
@@ -39,6 +47,22 @@ class Application:
 
     def setDestination(self, newDestination):
         self._destination = newDestination
+
+    def setPath(self, newPath):
+        self._path = newPath
+
+    def setPrevSource(self, newPrevSource):
+        self._prevSource = newPrevSource
+
+    def addToPath(self, node):
+        path = self.getPath()
+        path.append(node)
+        self.setPath(path)
+
+    def removeLastNodeFromPath(self):
+        path = self.getPath()
+        path.pop()
+        self.setPath(path)
 
     def askNumSensors(self):
         validInput = False
@@ -103,26 +127,50 @@ class Application:
         self.setSource(self.askSensorID('source'))
         self.setDestination(self.askSensorID('destination'))
 
-    def findPath(self, dictSensors, source, destination):
+    def findPath(self, dictSensors, source, destination, path):
         source = source
         destination = destination
-        path = []
-        path.append(source)
 
-        if source == destination:
-            return path
-        else:
-            neighbors = dictSensors.get(source)
-            if destination in neighbors:
-                path.append(destination)
+        if len(path) == 0:
+            self.addToPath(source)
+
+        try:
+            if source == destination:
+                return
             else:
-                self.findPath(dictSensors, neighbors[0], destination)
 
-        print('Path = {0}'.format(path))
+                nodeMaxDist = self.findNodeMaxDistance(
+                    self.getPreviousSource(), source, dictSensors)
+                self.addToPath(nodeMaxDist)
+                self.setDictSensors(dictSensors.pop(source))
+                self.setPrevSource(source)
+                self.findPath(dictSensors, nodeMaxDist,
+                              destination, self.getPath())
+        except:
+            self.setPath([])
+            print('The destination is not found')
+
+    def findNodeMaxDistance(self, prevSource, key, dict):
+        list = dict[key]
+        if prevSource != "":
+            indexPrev = list.index(prevSource)
+            list.pop(indexPrev + 1)
+            list.pop(indexPrev)
+
+        changedList = list[-1::-2]
+        changedList.reverse()
+
+        maxValue = max(changedList)
+        index = list.index(maxValue)
+        maxDistanceNode = list[index-1]
+
+        return maxDistanceNode
 
 
 App = Application()
 App.createSensors()
 App.convrtToDictionary(App._listSensors)
 App.getSourceAndDestination()
-App.findPath(App._dictSensors, App._source, App._destination)
+App.findPath(App._dictSensors, App._source, App._destination, App.getPath())
+if App._path[-1] == App._destination:
+    print('Path = {0}'.format(App._path))
