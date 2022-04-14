@@ -12,6 +12,7 @@ class Application:
         self._path = []
         self._prevSource = ''
 
+    # Accessor Methods
     def getListSensors(self):
         return self._listSensors
 
@@ -33,6 +34,7 @@ class Application:
     def getPreviousSource(self):
         return self._prevSource
 
+    # Mutator Methods
     def setListSensors(self, newListSensors):
         self._listSensors = newListSensors
 
@@ -54,6 +56,7 @@ class Application:
     def setPrevSource(self, newPrevSource):
         self._prevSource = newPrevSource
 
+    # Helper Methods
     def addToPath(self, node):
         path = self.getPath()
         path.append(node)
@@ -127,6 +130,22 @@ class Application:
         self.setSource(self.askSensorID('source'))
         self.setDestination(self.askSensorID('destination'))
 
+    def findNodeMaxDistance(self, prevSource, key, dict):
+        list = dict[key]
+        if prevSource != "":
+            indexPrev = list.index(prevSource)
+            list.pop(indexPrev + 1)
+            list.pop(indexPrev)
+
+        changedList = list[-1::-2]
+        changedList.reverse()
+
+        maxValue = max(changedList)
+        index = list.index(maxValue)
+        maxDistanceNode = list[index-1]
+
+        return maxDistanceNode
+
     def findPath(self, dictSensors, source, destination, path):
         source = source
         destination = destination
@@ -150,24 +169,9 @@ class Application:
             self.setPath([])
             print('The destination is not found')
 
-    def findNodeMaxDistance(self, prevSource, key, dict):
-        list = dict[key]
-        if prevSource != "":
-            indexPrev = list.index(prevSource)
-            list.pop(indexPrev + 1)
-            list.pop(indexPrev)
-
-        changedList = list[-1::-2]
-        changedList.reverse()
-
-        maxValue = max(changedList)
-        index = list.index(maxValue)
-        maxDistanceNode = list[index-1]
-
-        return maxDistanceNode
-
 
 App = Application()
+WirelessNetworks.greetMessage(WirelessNetworks)
 App.createSensors()
 App.convrtToDictionary(App._listSensors)
 App.getSourceAndDestination()
