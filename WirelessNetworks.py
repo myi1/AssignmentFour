@@ -69,7 +69,7 @@ class WirelessNetworks:
                 validInput = True
                 return numNeighbors
 
-    def getNeighborofSensor(self, sensorID):
+    def getNeighborOfSensor(self, sensorID):
         validInput = False
         while validInput is not True:
             # Get user input

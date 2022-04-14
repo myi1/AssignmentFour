@@ -109,7 +109,7 @@ class Application:
             neighborsList = []
 
             while countNeighbors < numNeighbors:
-                neighborID = sensor.getNeighborofSensor(
+                neighborID = sensor.getNeighborOfSensor(
                     sensor._id)  # Get neighbor ID
                 neighborsList.append(neighborID)  # Add to list
                 distToNeighbor = sensor.getDistance(
