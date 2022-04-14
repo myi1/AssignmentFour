@@ -71,7 +71,9 @@ class Application:
         validInput = False
         while validInput is not True:
             try:
+                # Get user input
                 numSensors = int(input("Enter the number of sensors: "))
+            # If user input is not an integer
             except:
                 print("This is an invalid entry for the number of sensors!")
             else:
@@ -82,8 +84,9 @@ class Application:
         validInput = False
         while validInput is not True:
             try:
+                # Get user input
                 userInput = input('Enter the {0} sensor: '.format(type))
-
+                # If user input is alphabetical
                 if userInput.isalpha():
                     validInput = True
                     return userInput
@@ -94,31 +97,35 @@ class Application:
                 print('This is an invalid entry for {0} sensor!'.format(type))
 
     def createSensors(self):
-        count = 0
-        self.askNumSensors()
+        count = 0  # Counting variable
+        self.askNumSensors()  # Get number of sensors from user
 
-        while count < self._numSensors:
-            sensor = WirelessNetworks()
-            sensor.askSensorID()
+        while count < self._numSensors:  # Loop block to iterate based on the value provided by user
+            sensor = WirelessNetworks()  # Create sensor object
+            sensor.askSensorID()  # Get sensor object ID
 
-            countNeighbors = 0
-            numNeighbors = sensor.getNeighbors()
+            countNeighbors = 0  # Counting variable
+            numNeighbors = sensor.getNeighbors()  # Get neighbors for current sensor
             neighborsList = []
 
             while countNeighbors < numNeighbors:
-                neighborID = sensor.getNeighborofSensor(sensor._id)
-                neighborsList.append(neighborID)
-                distToNeighbor = sensor.getDistance(sensor._id)
-                neighborsList.append(distToNeighbor)
+                neighborID = sensor.getNeighborofSensor(
+                    sensor._id)  # Get neighbor ID
+                neighborsList.append(neighborID)  # Add to list
+                distToNeighbor = sensor.getDistance(
+                    sensor._id)  # Get distance from sensor
+                neighborsList.append(distToNeighbor)  # Add to list
+                # Set value of list in sensor object
                 sensor.setNeighborsList(neighborsList)
-                countNeighbors += 1
+                countNeighbors += 1  # Iterate the count
 
-            sensor.getOxygen()
-            sensor.getTemp()
+            sensor.getOxygen()  # Get sensor Oxygen level
+            sensor.getTemp()  # Get sensor Temperature level
+            # Get value of list attribute in application object
             listSensors = self.getListSensors()
-            listSensors.append(sensor)
-            self.setListSensors(listSensors)
-            count += 1
+            listSensors.append(sensor)  # Add current sensor to list
+            self.setListSensors(listSensors)  # Update list in object
+            count += 1  # Iterate the count
 
     def convrtToDictionary(self, listSensors):
         dictSensors = self.getDictSensors()
@@ -154,18 +161,21 @@ class Application:
             self.addToPath(source)
 
         try:
+            # Base Case
             if source == destination:
                 return
             else:
-
+                # Recursive loop
                 nodeMaxDist = self.findNodeMaxDistance(
-                    self.getPreviousSource(), source, dictSensors)
-                self.addToPath(nodeMaxDist)
+                    self.getPreviousSource(), source, dictSensors)  # Find node at max distance
+                self.addToPath(nodeMaxDist)  # Add node to path
+                # Remove element from dictionary
                 self.setDictSensors(dictSensors.pop(source))
-                self.setPrevSource(source)
+                self.setPrevSource(source)  # Update value of prevSource
                 self.findPath(dictSensors, nodeMaxDist,
-                              destination, self.getPath())
+                              destination, self.getPath())  # Invoke recursive function with new source parameter
         except:
+            # Alternative Case if no path can be found
             self.setPath([])
             print('The destination is not found')
 
